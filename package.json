@@ -22,6 +22,7 @@
     "test": "npm run integration"
   },
   "dependencies": {
+    "bootstrap-vue": "^0.16.1",
     "chart.js": "^2.6.0",
     "vue": "^2.3.3",
     "vue-chartjs": "^2.6.5"

@@ -1,30 +1,36 @@
 <template>
-  <div>
-    <div>
-      <h1>This week</h1>
-      This week there has been
-      <span class="additions">
-        {{ codeFrequency[codeFrequency.length-1][1] }} additions
-      </span>
-      &amp;
-      <span class="deletions">
-        {{ codeFrequency[codeFrequency.length-1][2] }} deletions
-      </span>
-      in
-      <span class="commits">
-        {{ participation.all[participation.all.length-1] }} commits
-      </span>
+  <div class="container">
+    <div class="row">
+      <b-card class="col-xl mb-2 bg-faded">
+        This week there has been
+        <span class="additions">
+          {{ codeFrequency[codeFrequency.length-1][1] }} additions
+        </span>
+        &amp;
+        <span class="deletions">
+          {{ codeFrequency[codeFrequency.length-1][2] }} deletions
+        </span>
+        in
+        <span class="commits">
+          {{ participation.all[participation.all.length-1] }} commits
+        </span>
+      </b-card>
     </div>
 
-    <div>
-      <h1>Authors:</h1>
-      <div v-for="contributor in contributors">
-        {{ contributor.author.login }}
-        {{ contributor.author.avatar_url }}
-        <span class="additions">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
-        <span class="deletions">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
-        <span class="commits">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
-      </div>
+    <div class="row">
+      <b-card-group>
+        <b-card 
+          v-for="contributor in contributors"
+          class="bg-faded"
+          :key="contributor.author.login"
+          :img="contributor.author.avatar_url"
+          :title="contributor.author.login"
+        >
+          <span class="additions">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
+          <span class="deletions">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
+          <span class="commits">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
+        </b-card>
+      </b-card-group>
     </div>
 
     <div>
