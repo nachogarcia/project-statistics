@@ -3,48 +3,51 @@
     <div class="row">
       <b-card class="col-xl mb-2 bg-faded">
         This week there has been
-        <span class="additions">
+        <span class="text-primary">
           {{ codeFrequency[codeFrequency.length-1][1] }} additions
         </span>
         &amp;
-        <span class="deletions">
+        <span class="text-danger">
           {{ codeFrequency[codeFrequency.length-1][2] }} deletions
         </span>
         in
-        <span class="commits">
+        <span class="text-warning">
           {{ participation.all[participation.all.length-1] }} commits
         </span>
       </b-card>
     </div>
 
+    <b-card-group>
+      <b-card 
+        v-for="contributor in contributors"
+        class="bg-faded"
+        :key="contributor.author.login"
+        :img="contributor.author.avatar_url"
+        :title="contributor.author.login"
+      >
+        <span class="text-primary">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
+        <span class="text-danger">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
+        <span class="text-warning">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
+      </b-card>
+    </b-card-group>
+
+    <h1>Commits per hour</h1>
     <div class="row">
-      <b-card-group>
-        <b-card 
-          v-for="contributor in contributors"
-          class="bg-faded"
-          :key="contributor.author.login"
-          :img="contributor.author.avatar_url"
-          :title="contributor.author.login"
-        >
-          <span class="additions">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
-          <span class="deletions">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
-          <span class="commits">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
-        </b-card>
-      </b-card-group>
+      <div class="col">
+        {{ punchCard }}
+      </div>
     </div>
 
-    <div>
-      <h1>Hours</h1>
-      {{ punchCard }}
+    <h1>Commits per week this year</h1>
+    <div class="row">
+      <div class="col">
+        <LineChart
+          :datasets=yearDatasets
+          :labels=yearLabels
+        />
+      </div>
     </div>
 
-    <div>
-      <h1>Last Year</h1>
-      <LineChart
-        :datasets=yearDatasets
-        :labels=yearLabels
-      />
-    </div>
   </div>
 </template>
 
@@ -124,21 +127,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.additions{
-  color: green;
-}
-
-.deletions{
-  color: red;
-}
-
-.commits{
-  color: orange;
-}
-
-.percentaje{
-  color: blue;
-}
-</style>
