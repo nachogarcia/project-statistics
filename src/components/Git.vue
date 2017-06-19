@@ -3,7 +3,7 @@
     <div class="row">
       <b-card class="col-xl mb-2 bg-faded">
         This week there has been
-        <span class="text-primary">
+        <span class="text-success">
           {{ codeFrequency[codeFrequency.length-1][1] }} additions
         </span>
         &amp;
@@ -25,7 +25,7 @@
         :img="contributor.author.avatar_url"
         :title="contributor.author.login"
       >
-        <span class="text-primary">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
+        <span class="text-success">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
         <span class="text-danger">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
         <span class="text-warning">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
       </b-card>
