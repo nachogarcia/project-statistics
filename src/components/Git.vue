@@ -62,7 +62,10 @@
     <h1>Commits per hour</h1>
     <div class="row bg-faded">
       <div class="col">
-        {{ punchCard }}
+        <BubbleChart
+          :datasets=bubbleDatasets
+          :labels=bubbleLabels
+        />
       </div>
     </div>
 
@@ -82,6 +85,7 @@
 <script>
 import GitService from '../services/GitService.js'
 import LineChart from './LineChart'
+import BubbleChart from './BubbleChart'
 
 const owner = process.env.PROJECT_OWNER
 const repo = process.env.PROJECT_REPO
@@ -92,7 +96,7 @@ export default {
   name: 'git',
   
   components: {
-    LineChart
+    LineChart, BubbleChart
   },
 
   data () {
@@ -122,17 +126,39 @@ export default {
       return [ dataset ]
     },
 
-    yearLabels: function () { return this.commitActivity.map(week => this.unixDateToString(week.week))},
+    yearLabels: function () {
+      return this.commitActivity.map(week => this.unixDateToString(week.week))
+    },
+
+    bubbleDatasets: function () {
+      const label = 'Hourly commits'
+      const data = this.punchCard.filter(day =>
+        (day[2] > 0)
+      ).map(day => ({
+        x: day[0],
+        y: day[1],
+        r: day[2]
+      }))
+      const backgroundColor= '#f87979'
+
+      const dataset = { label, data, backgroundColor }
+      return [ dataset ]
+    },
+
+    bubbleLabels: function () { return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]},
   },
 
   methods: {
     unixDateToString: (unixDate) => { 
       let date = new Date(unixDate * 1000)
       return date.toLocaleDateString()
-    }
+    },
   }, 
 
   created () {
+    gitService.getPunchCard()
+      .then(response => this.punchCard = response)
+
     gitService.getContributors()
       .then(response => this.contributors = response)
 
@@ -145,8 +171,6 @@ export default {
     gitService.getParticipation()
       .then(response => this.participation = response)
 
-    gitService.getPunchCard()
-      .then(response => this.punchCard = response)
   }
 }
 </script>
