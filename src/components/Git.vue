@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h1>This week</h1>
     <div class="row">
       <b-card class="col-xl mb-2 bg-faded">
         This week there has been
@@ -17,7 +18,7 @@
       </b-card>
     </div>
 
-    <b-card-group>
+    <b-card-group :deck=true>
       <b-card 
         v-for="contributor in contributors"
         class="bg-faded"
@@ -25,21 +26,48 @@
         :img="contributor.author.avatar_url"
         :title="contributor.author.login"
       >
-        <span class="text-success">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
-        <span class="text-danger">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
-        <span class="text-warning">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
+      <div class="row">
+        <div class="col-6">
+          <b-list-group>
+            <b-list-group-item active>This week</b-list-group-item>
+            <b-list-group-item>
+              <span class="text-success">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
+            </b-list-group-item>
+            <b-list-group-item>
+              <span class="text-danger">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
+            </b-list-group-item>
+            <b-list-group-item>
+              <span class="text-warning">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
+            </b-list-group-item>
+          </b-list-group>
+        </div>
+        <div class="col-6">
+          <b-list-group>
+            <b-list-group-item active>Total</b-list-group-item>
+            <b-list-group-item>
+              <span class="text-success">{{ contributor.weeks.reduce( (a, b) => ({a: a.a + b.a }) ).a }} additions</span>
+            </b-list-group-item>
+            <b-list-group-item>
+              <span class="text-danger">{{ contributor.weeks.reduce( (a, b) => ({d: a.d + b.d }) ).d }} deletions</span>
+            </b-list-group-item>
+            <b-list-group-item>
+              <span class="text-warning">{{ contributor.total }} commits</span>
+            </b-list-group-item>
+          </b-list-group>
+        </div>
+      </div>
       </b-card>
     </b-card-group>
 
     <h1>Commits per hour</h1>
-    <div class="row">
+    <div class="row bg-faded">
       <div class="col">
         {{ punchCard }}
       </div>
     </div>
 
     <h1>Commits per week this year</h1>
-    <div class="row">
+    <div class="row bg-faded">
       <div class="col">
         <LineChart
           :datasets=yearDatasets
@@ -107,23 +135,18 @@ export default {
   created () {
     gitService.getContributors()
       .then(response => this.contributors = response)
-      .catch(error => console.log(error))
 
     gitService.getCommitActivity()
       .then(response => this.commitActivity = response)
-      .catch(error => console.log(error))
 
     gitService.getCodeFrequency()
       .then(response => this.codeFrequency = response)
-      .catch(error => console.log(error))
 
     gitService.getParticipation()
       .then(response => this.participation = response)
-      .catch(error => console.log(error))
 
     gitService.getPunchCard()
       .then(response => this.punchCard = response)
-      .catch(error => console.log(error))
   }
 }
 </script>
