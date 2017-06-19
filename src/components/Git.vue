@@ -18,44 +18,44 @@
       </b-card>
     </div>
 
-    <b-card-group :deck=true>
+    <b-card-group>
       <b-card 
         v-for="contributor in contributors"
-        class="bg-faded"
+        class="col-4 bg-faded"
         :key="contributor.author.login"
-        :img="contributor.author.avatar_url"
+        :img="contributor.author.avatar_url.concat('&size=250')"
         :title="contributor.author.login"
       >
-      <div class="row">
-        <div class="col-6">
-          <b-list-group>
-            <b-list-group-item active>This week</b-list-group-item>
-            <b-list-group-item>
-              <span class="text-success">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              <span class="text-danger">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              <span class="text-warning">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
-            </b-list-group-item>
-          </b-list-group>
+        <div class="row">
+          <div class="col-6">
+            <b-list-group>
+              <b-list-group-item active>This week</b-list-group-item>
+              <b-list-group-item>
+                <span class="text-success">{{ contributor.weeks[contributor.weeks.length-1].a }} additions</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                <span class="text-danger">{{ contributor.weeks[contributor.weeks.length-1].d }} deletions</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                <span class="text-warning">{{ contributor.weeks[contributor.weeks.length-1].c }} commits</span>
+              </b-list-group-item>
+            </b-list-group>
+          </div>
+          <div class="col-6">
+            <b-list-group>
+              <b-list-group-item active>Total</b-list-group-item>
+              <b-list-group-item>
+                <span class="text-success">{{ contributor.weeks.reduce( (a, b) => ({a: a.a + b.a }) ).a }} additions</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                <span class="text-danger">{{ contributor.weeks.reduce( (a, b) => ({d: a.d + b.d }) ).d }} deletions</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                <span class="text-warning">{{ contributor.total }} commits</span>
+              </b-list-group-item>
+            </b-list-group>
+          </div>
         </div>
-        <div class="col-6">
-          <b-list-group>
-            <b-list-group-item active>Total</b-list-group-item>
-            <b-list-group-item>
-              <span class="text-success">{{ contributor.weeks.reduce( (a, b) => ({a: a.a + b.a }) ).a }} additions</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              <span class="text-danger">{{ contributor.weeks.reduce( (a, b) => ({d: a.d + b.d }) ).d }} deletions</span>
-            </b-list-group-item>
-            <b-list-group-item>
-              <span class="text-warning">{{ contributor.total }} commits</span>
-            </b-list-group-item>
-          </b-list-group>
-        </div>
-      </div>
       </b-card>
     </b-card-group>
 
